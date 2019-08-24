@@ -29,7 +29,7 @@ module.exports = {
       type: 'ref',
       columnType: 'datetime',
       autoUpdatedAt: true
-    }
+    },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
@@ -38,5 +38,10 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
+    questions: {
+      collection: 'Questions', // model name
+      via: 'answerId', // model association field name
+      through: 'Answer_Question'
+    }
   }
 };
