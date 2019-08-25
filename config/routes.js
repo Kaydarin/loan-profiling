@@ -19,7 +19,7 @@ module.exports.routes = {
    ***************************************************************************/
 
   '/': { view: 'pages/homepage' },
-  'get /myapi/register': 'register-with-profiling'
+  'post /myapi/register': 'register-with-profiling'
 
   /***************************************************************************
    *                                                                          *
