@@ -21,12 +21,18 @@ module.exports = {
   exits: {},
 
   fn: async function(inputs, exits) {
+    /*
+      -- Find related questions along with its answers
+    */
     const savingsCollAns = await Questions.find({ id: 1 }).populate('answers');
     const loanCollAns = await Questions.find({ id: 2 }).populate('answers');
 
     let savings = _.head(savingsCollAns).answers;
     let loan = _.head(loanCollAns).answers;
 
+    /*
+      -- Map answers to score
+    */
     _.map(savings, function(data) {
       if (data.name === '0' || data.name === '2000') {
         _.assign(data, { score: 1 });
@@ -55,6 +61,9 @@ module.exports = {
       }
     });
 
+    /*
+      -- Get user answers along with the designated scores
+    */
     const userSavings = _.find(savings, {
       name: inputs.savingAns.toString()
     });
@@ -63,6 +72,8 @@ module.exports = {
       name: inputs.loanAns.toString()
     });
 
+    // If there's no matched answers in either one of them (as in user alter in front-end side),
+    // return partial error
     if (userSavings === undefined && userLoan === undefined) {
       return exits.success({
         statusCode: 204,
@@ -71,10 +82,14 @@ module.exports = {
       });
     }
 
+    /*
+      -- Calculate total user score
+    */
     const totalScore = userSavings.score + userLoan.score;
 
     let profile;
 
+    // Map user score to profile type
     if (totalScore >= 8) {
       profile = 'A';
     } else if (totalScore >= 6) {
@@ -85,6 +100,7 @@ module.exports = {
       profile = 'D';
     }
 
+    // Return success response
     return exits.success({
       statusCode: 200,
       savings: userSavings.name,
